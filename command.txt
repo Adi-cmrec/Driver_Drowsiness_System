@@ -1,3 +1,0 @@
-python drowsiness_final.py --shape-predictor shape_predictor_68_face_landmarks.dat --alarm alarm.WAV --webcam 0
-
-python drowsiness.py --shape-predictor shape_predictor_68_face_landmarks.dat --alarm alarm.WAV --webcam 0

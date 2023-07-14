@@ -6,6 +6,7 @@ import numpy as np
 import imutils
 import dlib
 import cv2
+from playsound import playsound
 
 
 main = tkinter.Tk()
@@ -34,7 +35,7 @@ def MOR(drivermouth):
     return mouth_aspect_ratio
     
 def startMonitoring():
-    pathlabel.config(text="          Webcam Connected Successfully")
+    pathlabel.config(text="Webcam Connected Successfully")
     webcamera = cv2.VideoCapture(0)
     svm_predictor_path = 'SVMclassifier.dat'
     EYE_AR_THRESH = 0.25
@@ -69,6 +70,7 @@ def startMonitoring():
             rightEyeHull = cv2.convexHull(rightEye)
             mouthHull = cv2.convexHull(mouth)
             cv2.drawContours(frame, [leftEyeHull], -1, (0, 255, 255), 1)
+            
             cv2.drawContours(frame, [rightEyeHull], -1, (0, 255, 255), 1)
             cv2.drawContours(frame, [mouthHull], -1, (0, 255, 0), 1)
             if ear < EYE_AR_THRESH:
@@ -76,13 +78,16 @@ def startMonitoring():
                 cv2.putText(frame, "Eyes Closed ", (10, 30),cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
                 if COUNTER >= EYE_AR_CONSEC_FRAMES:
                     cv2.putText(frame, "DROWSINESS ALERT!", (10, 50),cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
+                    playsound('1.mp3')
             else:
                 COUNTER = 0
                 cv2.putText(frame, "Eyes Open ", (10, 30),cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
             cv2.putText(frame, "EAR: {:.2f}".format(ear), (480, 30),cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
+            
             if mouEAR > MOU_AR_THRESH:
                 cv2.putText(frame, "Yawning, DROWSINESS ALERT! ", (10, 70),cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
                 yawnStatus = True
+                playsound('1.mp3')
                 output_text = "Yawn Count: " + str(yawns + 1)
                 cv2.putText(frame, output_text, (10,100),cv2.FONT_HERSHEY_SIMPLEX, 0.7,(255,0,0),2)
             else:
@@ -103,7 +108,7 @@ def startMonitoring():
 
 font = ('times', 16, 'bold')
 title = Label(main, text='Driver Drowsiness Monitoring System using Visual\n               Behaviour and Machine Learning',anchor=W, justify=LEFT)
-title.config(bg='Black', fg='white')  
+title.config(bg='black', fg='white')  
 title.config(font=font)           
 title.config(height=3, width=120)       
 title.place(x=0,y=5)
@@ -115,10 +120,10 @@ upload.place(x=50,y=200)
 upload.config(font=font1)  
 
 pathlabel = Label(main)
-pathlabel.config(bg='Sky Blue', fg='white')  
+pathlabel.config(bg='DarkOrange1', fg='white')  
 pathlabel.config(font=font1)           
 pathlabel.place(x=50,y=250)
 
 
-main.config(bg='Sky Blue')
+main.config(bg='chocolate1')
 main.mainloop()
